@@ -36,7 +36,7 @@ public:
 	void paintEvent(QPaintEvent*);
 	virtual void mouseReleaseEvent(QMouseEvent* ev) = 0;
 
-	/* 炮吃子步 */
+	/* 炮吃子、走步運算 */
 	unsigned int Cgen(unsigned int src);
 	unsigned int CgenR(unsigned int x, unsigned int c);
 	unsigned int CgenC(unsigned int y, unsigned int r);

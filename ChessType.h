@@ -9,7 +9,7 @@ public:
 	inline static unsigned int getLSB(unsigned int x) {
 		//取得 Bitboard 最小位元
 		//x: 傳入 Bitboard 值
-		//return: 最小位元 Bitboard 值
+		//回傳最小位元 Bitboard 值
 
 		return x & (-x);
 	}

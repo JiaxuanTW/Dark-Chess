@@ -239,8 +239,8 @@ int Board::click(QPoint point) {
 
 	for (size_t row = 0; row < 4; row++) {
 		for (size_t col = 0; col < 8; col++) {
-			if ((point.y() >= row * 50 && point.y() < (row + 1) * 50) &&
-				(point.x() >= col * 50 && point.x() < (col + 1) * 50)) {
+			if ((point.y() >= row * 150 + 185 && point.y() < (row + 1) * 150 + 185) &&
+				(point.x() >= col * 150 + 50 && point.x() < (col + 1) * 150 + 50)) {
 				return getSquareId(row, col);
 			}
 		}
@@ -365,8 +365,8 @@ void Board::drawPieces(QPainter& painter) {
 		while (bitBoard) {
 			unsigned int mask = ChessType::getLSB(bitBoard);
 			bitBoard ^= mask;
-			painter.drawPixmap(getColumnId(getSquareId(mask)) * 50,
-				getRowId(getSquareId(mask)) * 50, image);
+			painter.drawPixmap(getColumnId(getSquareId(mask)) * 150 + 50,
+				getRowId(getSquareId(mask)) * 150 + 185, image);
 		}
 	}
 
@@ -376,8 +376,8 @@ void Board::drawPieces(QPainter& painter) {
 	while (bitBoard) {
 		unsigned int mask = ChessType::getLSB(bitBoard);
 		bitBoard ^= mask;
-		painter.drawPixmap(getColumnId(getSquareId(mask)) * 50,
-			getRowId(getSquareId(mask)) * 50, image);
+		painter.drawPixmap(getColumnId(getSquareId(mask)) * 150 + 50,
+			getRowId(getSquareId(mask)) * 150 + 185, image);
 	}
 }
 
@@ -393,6 +393,7 @@ void Board::paintEvent(QPaintEvent*) {
 	// 繪製選取框
 	if (selectedId != -1) {
 		image.load("./images/select.png");
-		painter.drawPixmap(getColumnId(selectedId) * 50, getRowId(selectedId) * 50, image);
+		painter.drawPixmap(getColumnId(selectedId) * 150 + 50,
+			getRowId(selectedId) * 150 + 185, image);
 	}
 }
