@@ -5,7 +5,7 @@
 #include "MainWindow.h"
 #include "OpeningScreen.h"
 #include "LoadingScreen.h"
-#include "SettingsScreen.h"
+#include "ResultScreen.h"
 #include "Menu.h"
 #include "SinglePlayer.h"
 #include "MultiPlayer.h"
@@ -23,14 +23,14 @@ MainWindow::MainWindow(QWidget *parent)
     SinglePlayer* single = new SinglePlayer;
     MultiPlayer* multi = new MultiPlayer;
     LoadingScreen* loading = new LoadingScreen;
-    SettingsScreen* settings = new SettingsScreen;
+    ResultScreen* result = new ResultScreen;
 
     stack->addWidget(opening);  // 0
     stack->addWidget(menu);     // 1
     stack->addWidget(single);   // 2
     stack->addWidget(multi);    // 3
     stack->addWidget(loading);  // 4
-    stack->addWidget(settings); // 5
+    stack->addWidget(result);   // 5
     
     stack->setCurrentIndex(0);
 

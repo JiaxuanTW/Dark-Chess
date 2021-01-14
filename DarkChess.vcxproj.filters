@@ -62,12 +62,24 @@
     <ClCompile Include="SettingsScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ResultScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Board.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="LoadingScreen.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ResultScreen.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Menu.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MultiPLayer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -84,16 +96,7 @@
     <ClInclude Include="NextMoveInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MultiPLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Menu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OpeningScreen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SettingsScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -105,7 +105,6 @@ QVector<NextMoveInfo> SinglePlayer::generateMoves() {
 	return nextMoveInfoVector;
 }
 
-
 PiecePosition SinglePlayer::saveCurrentBoard() {
 	// 儲存現在棋盤面
 	// 回傳棋盤面

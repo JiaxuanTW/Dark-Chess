@@ -90,6 +90,7 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MultiPLayer.cpp" />
     <ClCompile Include="OpeningScreen.cpp" />
+    <ClCompile Include="ResultScreen.cpp" />
     <ClCompile Include="SettingsScreen.cpp" />
     <ClCompile Include="SinglePlayer.cpp" />
     <QtRcc Include="MainWindow.qrc" />
@@ -105,12 +106,12 @@
   <ItemGroup>
     <ClInclude Include="ChessType.h" />
     <QtMoc Include="LoadingScreen.h" />
-    <ClInclude Include="Menu.h" />
-    <ClInclude Include="MultiPLayer.h" />
+    <QtMoc Include="Menu.h" />
+    <QtMoc Include="MultiPLayer.h" />
     <ClInclude Include="NextMoveInfo.h" />
     <ClInclude Include="OpeningScreen.h" />
     <ClInclude Include="PiecePosition.h" />
-    <ClInclude Include="SettingsScreen.h" />
+    <QtMoc Include="ResultScreen.h" />
     <ClInclude Include="SinglePlayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
