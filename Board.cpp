@@ -414,14 +414,16 @@ void Board::paintEvent(QPaintEvent*) {
 	// 繪製棋盤
 	image.load("./images/board.jpg");
 	painter.drawPixmap(0, 0, image);
-	// 繪製棋子
-	drawPieces(painter);
+	
 	// 繪製選取框
 	if (selectedId != -1) {
 		image.load("./images/select.png");
 		painter.drawPixmap(getColumnId(selectedId) * 150 + 50,
 			getRowId(selectedId) * 150 + 185, image);
 	}
+
+	// 繪製棋子
+	drawPieces(painter);
 
 	//資訊欄
 	if (turnConstant == NULL)
