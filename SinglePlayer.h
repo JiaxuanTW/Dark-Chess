@@ -8,13 +8,15 @@
 
 class SinglePlayer : public Board
 {
-private:
-	QVector<NextMoveInfo> generateMoves();
-	PiecePosition saveCurrentBoard();
-	void computerMove();
+public:
+	//走棋運算
 	int evaluate();
-	int miniMax(int depth, int aTurn);
+	void computerMove();
+	int miniMax(int depth, int aTurn, int alpha, int beta);
+	PiecePosition saveCurrentBoard();
 	void undoFakeMove(PiecePosition piecePosition);
-	void mouseReleaseEvent(QMouseEvent* ev);
+	QVector<NextMoveInfo> generateMoves();
 	inline int negaTurn(int aTurn) { return aTurn == RED ? BLACK : RED; };
+private:
+	void mouseReleaseEvent(QMouseEvent* ev);
 };

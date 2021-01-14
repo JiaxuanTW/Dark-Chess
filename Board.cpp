@@ -130,7 +130,7 @@ void Board::movePiece(int srcSquareId, int destSquareId) {
 	(srcTypeId <= 7 ? red : black) |= destMask;
 	if (destTypeId != 0)
 		(srcTypeId <= 7 ? black : red) ^= destMask;
-	occupied ^= srcMask;
+	occupied = black|red;
 
 	// 走完棋 -> 換邊
 	nextTurn();
@@ -159,11 +159,11 @@ bool Board::validMove(int srcSquareId, int destSquareId) {
 		return false;
 	}
 
-	//確認走棋目的是不是對手 以及 在範圍內
-	unsigned int redMoveCheck = (black | chessType[0].pos) &
+	// 確認走棋目的是不是對手且不是暗棋 以及 在範圍內 
+	unsigned int redMoveCheck = ((black) & (~chessType[15].pos) | chessType[0].pos) &
 		moveMask[srcSquareId] & rowMask[getRowId(destSquareId)] &
 		colMask[getColumnId(destSquareId)];
-	unsigned int blackMoveCheck = (red | chessType[0].pos) &
+	unsigned int blackMoveCheck = ((red) & (~chessType[15].pos) | chessType[0].pos) &
 		moveMask[srcSquareId] & rowMask[getRowId(destSquareId)] &
 		colMask[getColumnId(destSquareId)];
 
@@ -202,7 +202,9 @@ bool Board::validMove(int srcSquareId, int destSquareId) {
 		return redMoveCheck && (destTypeId == 12 || destTypeId == 13 ||
 			destTypeId == 14 || destTypeId == 0) ? true : false;
 	case 6:
-		return redMoveCheck && false; /*TODO:特殊處理*/
+		return (chessType[0].pos & moveMask[srcSquareId] & rowMask[getRowId(destSquareId)] &
+			colMask[getColumnId(destSquareId)]) | ((black & Cgen(srcSquareId)) & rowMask[getRowId(destSquareId)] &
+				colMask[getColumnId(destSquareId)] & (~(chessType[15].pos))) ? true : false; //炮點紅棋子
 	case 7:
 		return redMoveCheck && (destTypeId == 8 || destTypeId == 14 || destTypeId == 0) ? true : false;
 	case 8:
@@ -217,7 +219,9 @@ bool Board::validMove(int srcSquareId, int destSquareId) {
 		return blackMoveCheck && (destTypeId == 5 || destTypeId == 6 ||
 			destTypeId == 7 || destTypeId == 0) ? true : false;
 	case 13:
-		return blackMoveCheck && false; /*TODO:特殊處理*/
+		return (chessType[0].pos & moveMask[srcSquareId] & rowMask[getRowId(destSquareId)] &
+			colMask[getColumnId(destSquareId)]) | (red & Cgen(srcSquareId) & rowMask[getRowId(destSquareId)] &
+				colMask[getColumnId(destSquareId)] & (~chessType[15].pos)) ? true : false; //炮點紅棋子	
 	case 14:
 		return blackMoveCheck && (destTypeId == 1 || destTypeId == 7 || destTypeId == 0) ? true : false;
 	}
@@ -241,6 +245,111 @@ int Board::click(QPoint point) {
 			}
 		}
 	}
+}
+
+unsigned int Board::Cgen(unsigned int src) {
+	/*printf("src = %d\n", src);*/
+	unsigned int r = src / 4; //取得row
+	unsigned int c = src % 4; //取得col
+	unsigned int x = ((colMask[r] & occupied) ^ (1 << src)) >> (4 * r); //判斷行炮位-推到第一列-削掉炮本身的位置-c表示炮在第幾行
+	/*OOO炮 OO炮o O炮oo 炮ooo*/
+	unsigned int y = ((rowMask[c] & occupied) ^ (1 << src)) >> c;  //判斷列炮位-推到第一行-削掉炮本身的位置-r表示炮在第幾列
+	/*printf("r = %d,c =  %d\n", r, c);
+	printf("x = %08x, y = %08x\n", x, y);
+	printf("%08x\n", (CgenR(x, c) << (4 * r)) | (CgenC(y, r) << c));*/
+	return ((CgenR(x, c) << (4 * r)) | (CgenC(y, r) << c));
+}
+
+unsigned int Board::CgenR(unsigned int x, unsigned int c) {
+	switch (c) {
+	case 0: //炮在第一行 將二三四最右邊之棋子拔掉 若還有旗 則回傳此旗(最右邊拔掉後之最右邊)
+		if (x) {
+			unsigned int mask = ChessType::getLSB(x);
+			return (x ^= mask) ? ChessType::getLSB(x) : 0;
+		}
+		else return 0;
+	case 1:
+		return ((x & 12) == 12) ? 8 : 0; // 12 = 1100, 炮在第二行,若三四行有棋,回傳第四行為炮位(8=1000)
+	case 2:
+		return ((x & 3) == 3) ? 1 : 0; // 3 = 0011, 炮在第三行,若一二行有棋,回傳第一位為炮位(1=0001)
+	case 3:
+		if (x) {
+			unsigned int mask = ChessType::getMSB(x);
+			return (x ^= mask) ? ChessType::getMSB(x) : 0;
+		}// 炮在第四行 將一二三最左邊之棋子拔掉 若還有旗 則回傳此旗(最左邊拔掉後之最左邊)
+	}
+}
+
+unsigned int Board::CgenC(unsigned int y, unsigned int r) {
+	switch (r) {//炮在第0~7之位置(
+	case 0:
+		return CgenC0(y);
+	case 1:
+		return CgenC1(y);
+	case 2:
+		return CgenC2(y);
+	case 3:
+		return CgenC3(y);
+	case 4:
+		return CgenC4(y);
+	case 5:
+		return CgenC5(y);
+	case 6:
+		return CgenC6(y);
+	case 7:
+		return CgenC7(y);
+	}
+}
+
+unsigned int Board::CgenCL(unsigned int y) { //找下面
+	unsigned int mask = ChessType::getLSB(y);
+	return (y ^= mask) ? ChessType::getLSB(y) : 0;
+}
+
+unsigned int Board::CgenCR(unsigned int y) { //找上面
+	unsigned int mask = ChessType::getMSB(y);
+	return (y ^= mask) ? ChessType::getMSB(y) : 0;
+}
+
+unsigned int Board::CgenC0(unsigned int y) { //炮在最上面 只找下面
+	return CgenCL(y);
+}
+
+unsigned int Board::CgenC1(unsigned int y) {//炮在第二位 找下面六位
+	return CgenCL(y & 0x11111100); // 下六
+}
+
+unsigned int Board::CgenC2(unsigned int y) {//炮在第三位 找第一位或刪掉前三位找下面五位
+	unsigned int part = 0;
+	if ((y & 0x00000011) == 0x00000011)//上二
+		part |= 1;
+	return part | CgenCL(y & 0x11111000); //下五
+}
+
+unsigned int Board::CgenC3(unsigned int y) {//炮在第四位 找前三位或刪掉前四位找下面四位
+	unsigned int part = 0;
+	part = CgenCR(y & 0x00000111); //上三
+	return part | CgenCL(y & 0x11110000); // 下四
+}
+
+unsigned int Board::CgenC4(unsigned int y) {//炮在第五位 找前四位或刪掉前五位找下面三位
+	unsigned int part = 0;
+	part = CgenCR(y & 0x00001111); //上四
+	return part | CgenCL(y & 0x11100000);//下三
+}
+
+unsigned int Board::CgenC5(unsigned int y) {//炮在第六位 找前五位或刪掉前六位找下兩位
+	unsigned int part = 0;
+	part = CgenCR(y & 0x00011111); //上五
+	return part | CgenCL(y & 0x11000000); //下二
+}
+
+unsigned int Board::CgenC6(unsigned int y) {//炮在第七位 找前六位
+	return CgenCR(y & 0x00111111); //上六
+}
+
+unsigned int Board::CgenC7(unsigned int y) {//炮在最下面 只找上面
+	return CgenCR(y); //上七
 }
 
 void Board::drawPieces(QPainter& painter) {

@@ -13,10 +13,13 @@ public:
 
 		return x & (-x);
 	}
-	inline static unsigned int getMSB(unsigned int x) {
-		//取得 Bitboard 最大位元
-		//沒有實作
-
-		return 0;
+	inline static unsigned int getMSB(unsigned int x ) {
+		x |= x >> 32;
+		x |= x >> 16;
+		x |= x >> 8;
+		x |= x >> 4;
+		x |= x >> 2;
+		x |= x >> 1;
+		return (x >> 1) + 1;
 	}
 };

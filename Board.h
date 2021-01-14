@@ -36,6 +36,21 @@ public:
 	void paintEvent(QPaintEvent*);
 	virtual void mouseReleaseEvent(QMouseEvent* ev) = 0;
 
+	/* 炮吃子步 */
+	unsigned int Cgen(unsigned int src);
+	unsigned int CgenR(unsigned int x, unsigned int c);
+	unsigned int CgenC(unsigned int y, unsigned int r);
+	unsigned int CgenCL(unsigned int y);
+	unsigned int CgenCR(unsigned int y);
+	unsigned int CgenC0(unsigned int y);
+	unsigned int CgenC1(unsigned int y);
+	unsigned int CgenC2(unsigned int y);
+	unsigned int CgenC3(unsigned int y);
+	unsigned int CgenC4(unsigned int y);
+	unsigned int CgenC5(unsigned int y);
+	unsigned int CgenC6(unsigned int y);
+	unsigned int CgenC7(unsigned int y);
+
 protected:
 	ChessType chessType[16];
 	unsigned int red, black, occupied;

@@ -33,7 +33,7 @@ QVector<NextMoveInfo> SinglePlayer::generateMoves() {
 						chessType[13].pos | chessType[14].pos);
 					break;
 				case 6:
-					/*TODO:砲的額外處理*/
+					dest = ((Cgen(srcSquareId) & black) | (moveMask[srcSquareId] & chessType[0].pos));
 					break;
 				case 7:
 					dest = moveMask[srcSquareId] & (chessType[0].pos | chessType[8].pos |
@@ -82,7 +82,7 @@ QVector<NextMoveInfo> SinglePlayer::generateMoves() {
 						chessType[6].pos | chessType[7].pos);
 					break;
 				case 13:
-					/*TODO:砲的額外處理*/
+					dest = ((Cgen(srcSquareId) & red) | (moveMask[srcSquareId] & chessType[0].pos));
 					break;
 				case 14:
 					dest = moveMask[srcSquareId] & (chessType[0].pos | chessType[1].pos |
@@ -105,6 +105,7 @@ QVector<NextMoveInfo> SinglePlayer::generateMoves() {
 	return nextMoveInfoVector;
 }
 
+
 PiecePosition SinglePlayer::saveCurrentBoard() {
 	// 儲存現在棋盤面
 	// 回傳棋盤面
@@ -122,7 +123,9 @@ PiecePosition SinglePlayer::saveCurrentBoard() {
 void SinglePlayer::computerMove() {
 	QVector<NextMoveInfo> nextMoveInfo = generateMoves();
 
+	// 如果沒有可移動步伐，就進行翻棋
 	if (nextMoveInfo.isEmpty() && chessType[15].pos) {
+		printf("I AM LEO.");
 		qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime())); // 初始化 qsrand 種子
 		int randomPiece = 0;
 		do {
@@ -141,7 +144,7 @@ void SinglePlayer::computerMove() {
 
 		PiecePosition currentBoard = saveCurrentBoard();
 		movePiece(nextMove.src, nextMove.dest);// HACK: 換邊問題
-		int score = miniMax(4, negaTurn(turn));
+		int score = miniMax(4, negaTurn(turn), INT_MIN, INT_MAX);
 		undoFakeMove(currentBoard);
 
 		if (score > maxScore) {
@@ -153,7 +156,18 @@ void SinglePlayer::computerMove() {
 	}
 	/*cout << stepsCounter << " - bestMove:" << bestMove.src << "->" <<
 		bestMove.dest << " - maxScore:" << maxScore << endl;*/
-	movePiece(bestMove.src, bestMove.dest);
+	if (maxScore <= evaluate() && chessType[15].pos) {
+		qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime())); // 初始化 qsrand 種子
+		int randomPiece = 0;
+		do {
+			randomPiece = qrand() % 32;
+		} while (rowMask[getRowId(randomPiece)] &
+			colMask[getColumnId(randomPiece)] & (~chessType[15].pos));
+		flipPiece(randomPiece);
+	}
+	else {
+		movePiece(bestMove.src, bestMove.dest);
+	}
 }
 
 int SinglePlayer::evaluate() {
@@ -213,21 +227,23 @@ int SinglePlayer::evaluate() {
 		return blackValue - redValue;
 }
 
-int SinglePlayer::miniMax(int depth, int aTurn) {
-	//cout << "Enter miniMax depth: " << depth <<", turn: " << turn << endl;
+int SinglePlayer::miniMax(int depth, int aTurn, int alpha, int beta) {
+	//cout << "Enter miniMax depth: " << depth << ", turn: " << turn << endl;
 	QVector<NextMoveInfo> childNodes = generateMoves();
-	int best = 0;
+	int best;
+	if (turn == aTurn) {
+		best = INT_MIN;
+	}
+	else {
+		best = INT_MAX;
+	}
 	int value = 0;
 
 	if (depth == 0 || childNodes.isEmpty()) {
-		//cout << "Leave miniMax with returning evaluate() turn = " << turn << endl;
+		//cout << "Leave miniMax with returning evaluate()" << endl;
 		return evaluate();
 	}
 
-	if (turn == aTurn)
-		best = INT_MIN;
-	else
-		best = INT_MAX;
 
 	while (!childNodes.isEmpty()) {
 		NextMoveInfo node = childNodes.back();
@@ -235,20 +251,49 @@ int SinglePlayer::miniMax(int depth, int aTurn) {
 
 		PiecePosition board = saveCurrentBoard();
 		movePiece(node.src, node.dest);
-		value = miniMax(depth - 1, aTurn);
+
+		value = miniMax(depth - 1, aTurn, alpha, beta);
 		//cout << "value:" << value << endl;
+		//cout << "first b : " << beta << "a :" << alpha << endl;
 		undoFakeMove(board);
 
 		if (turn == aTurn) {
-			if (value > best)
-				best = value;
+			//cout << " himy " << endl;
+			if (value >= alpha) {
+				//	cout << " hi1 " << endl;
+				alpha = value;
+			}
+			if (beta < alpha) {
+				best = beta;
+				//cout << " ff " << endl;
+				break;
+			}
+			if (alpha > best) {
+				best = alpha;
+				//cout << " hi2 "<<best<<endl;
+			}
+
 		}
 		else {
-			if (value < best)
-				best = value;
+			//cout << " hinot " << endl;
+			if (value <= beta) {
+				//cout << " hi3 " << endl;
+				beta = value;
+			}
+			if (beta < alpha) {
+				best = alpha;
+				//cout << " ff " << endl;
+				break;
+			}
+			if (beta < best) {
+				best = beta;
+				//cout << " hi4 " <<best<< endl;
+			}
 		}
+		//cout <<"best :"<<best<<"b : "<< beta<<" a: "<<alpha << endl;
 	}
-	//cout << "Leave miniMax depth: " << depth << endl;
+	//cout << "\n return best : " << best << endl;
+	/*cout << "Leave miniMax depth: " << depth << endl;*/
 	return best;
 }
 
