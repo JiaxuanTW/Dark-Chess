@@ -315,9 +315,13 @@ void SinglePlayer::undoFakeMove(PiecePosition piecePosition) {
 void SinglePlayer::mouseReleaseEvent(QMouseEvent* ev) {
 	// 滑鼠點擊事件
 	// ev: 滑鼠參數
-	int clickedId = -1;
-	clickedId = click(ev->pos());
+	int clickedId = click(ev->pos());
 
+	//若點擊非法範圍 -> 無效
+	if (clickedId == -1)
+		return;
+
+	//若第一手 -> 翻棋並決定玩家棋方
 	if (turn == NULL) {
 		flipPiece(clickedId);
 		getChessTypeId(clickedId) <= 7 ? turn = BLACK : turn = RED;
@@ -327,7 +331,8 @@ void SinglePlayer::mouseReleaseEvent(QMouseEvent* ev) {
 		return;
 	}
 
-	if (selectedId == -1) { // 第一次選子
+	//選子行為，第一次選子
+	if (selectedId == -1) { 
 		if (rowMask[getRowId(clickedId)] & colMask[getColumnId(clickedId)]
 			& chessType[15].pos) {
 			// 翻子

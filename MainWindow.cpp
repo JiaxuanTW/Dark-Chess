@@ -97,10 +97,27 @@ void MainWindow::switchToMultiPlayer() {
     stack->setCurrentIndex(3);
 }
 
-void MainWindow::switchToLoadingScreen() {
+void MainWindow::redirectToScreen(int redirectIndex) {
     player->stop();
     stack->setCurrentIndex(4);
-    QTimer::singleShot(3 * 1000, this, SLOT(transitScreen()));
+
+    int delay = 4500; // Loading 畫面等待時間
+    switch (redirectIndex) {
+    case 1:
+        QTimer::singleShot(delay, this, SLOT(switchToMenu())); 
+        break;
+    case 2:
+        QTimer::singleShot(delay, this, SLOT(switchToSinglePlayer()));
+        break;
+    case 3:
+        QTimer::singleShot(delay, this, SLOT(switchToMultiPlayer()));
+        break;
+    case 4:
+        break;
+    case 5:
+        QTimer::singleShot(delay, this, SLOT(switchToSettings()));
+        break;
+    }
 }
 
 void MainWindow::switchToSettings() {

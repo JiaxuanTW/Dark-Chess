@@ -21,11 +21,11 @@ void Menu::mouseReleaseEvent(QMouseEvent* ev) {
 	//控制按鈕按下功能
 	if (ev->x() >= 1090 && ev->x() <= 1515 && ev->y() >= 570 && ev->y() <= 640) {
 		//點擊單人遊戲
-		control->switchToSinglePlayer();
+		control->redirectToScreen(2);
 	}
 	else if (ev->x() >= 1130 && ev->x() <= 1520 && ev->y() >= 670 && ev->y() <= 730) {
 		//點擊雙人遊戲
-		control->switchToMultiPlayer();
+		control->redirectToScreen(3);
 	}
 	else if (ev->x() >= 1130 && ev->x() <= 1520 && ev->y() >= 760 && ev->y() <= 820) {
 		//點擊關閉遊戲

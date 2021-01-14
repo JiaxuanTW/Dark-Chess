@@ -104,7 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChessType.h" />
-    <ClInclude Include="LoadingScreen.h" />
+    <QtMoc Include="LoadingScreen.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MultiPLayer.h" />
     <ClInclude Include="NextMoveInfo.h" />

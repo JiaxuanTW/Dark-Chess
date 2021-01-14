@@ -67,6 +67,9 @@
     <QtMoc Include="Board.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="LoadingScreen.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SinglePlayer.h">
@@ -88,9 +91,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OpeningScreen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadingScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SettingsScreen.h">

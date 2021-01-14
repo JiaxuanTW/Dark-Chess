@@ -13,11 +13,10 @@ public:
     MainWindow(QWidget *parent = Q_NULLPTR);
     QStackedWidget* stack;
     QMediaPlayer* player;
-    QTimer* countdown;
 
 public slots:
     void switchToMenu();
-    void switchToLoadingScreen();
+    void redirectToScreen(int redirectIndex);
     void switchToSettings();
     void switchToSinglePlayer();
     void switchToMultiPlayer();

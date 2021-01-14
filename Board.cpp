@@ -245,6 +245,9 @@ int Board::click(QPoint point) {
 			}
 		}
 	}
+
+	//若點擊視窗外面就回傳範圍錯誤
+	return -1;
 }
 
 unsigned int Board::Cgen(unsigned int src) {
