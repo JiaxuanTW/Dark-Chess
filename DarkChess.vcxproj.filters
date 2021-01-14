@@ -59,9 +59,6 @@
     <ClCompile Include="LoadingScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SettingsScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ResultScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

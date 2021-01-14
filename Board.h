@@ -23,6 +23,7 @@ public:
 	/* 棋盤功能 */
 	void init();
 	void shuffle();
+	void setPlayerInfo(QString p1, QString p2);
 	
 	/* 走棋運算 */
 	void movePiece(int srcSquareId, int destSquareId);
@@ -55,7 +56,12 @@ protected:
 	ChessType chessType[16];
 	unsigned int red, black, occupied;
 	int turn;
+	int turnConstant;
+	int roundCounter;
+	int stepCounter;
 	int selectedId;
+	QString player1;
+	QString player2;
 	inline int bitsHash(unsigned int x);
 	enum Turn { RED = -1, BLACK = 1 };
 	//棋盤列遮罩

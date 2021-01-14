@@ -91,7 +91,6 @@
     <ClCompile Include="MultiPLayer.cpp" />
     <ClCompile Include="OpeningScreen.cpp" />
     <ClCompile Include="ResultScreen.cpp" />
-    <ClCompile Include="SettingsScreen.cpp" />
     <ClCompile Include="SinglePlayer.cpp" />
     <QtRcc Include="MainWindow.qrc" />
     <QtUic Include="MainWindow.ui" />

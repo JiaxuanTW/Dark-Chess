@@ -9,6 +9,7 @@
 class SinglePlayer : public Board
 {
 public:
+	explicit SinglePlayer();
 	PiecePosition saveCurrentBoard();
 	QVector<NextMoveInfo> generateMoves();
 	void computerMove();

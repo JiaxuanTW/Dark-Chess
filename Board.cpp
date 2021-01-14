@@ -13,7 +13,13 @@ Board::Board(QWidget* parent)
 
 	//初始化成員變數
 	turn = NULL;
+	turnConstant = NULL;
 	selectedId = -1;
+	roundCounter = 0;
+	stepCounter = 0;
+	player1 = "NULL";
+	player2 = "NULL";
+
 	init();
 	shuffle(); //生成隨機盤面
 }
@@ -109,6 +115,11 @@ void Board::shuffle() {
 
 	for (size_t i = 8; i <= 14; i++)
 		black |= chessType[i].pos;
+}
+
+void Board::setPlayerInfo(QString p1, QString p2) {
+	player1 = p1;
+	player2 = p2;
 }
 
 void Board::movePiece(int srcSquareId, int destSquareId) {
@@ -399,4 +410,14 @@ void Board::paintEvent(QPaintEvent*) {
 		painter.drawPixmap(getColumnId(selectedId) * 150 + 50,
 			getRowId(selectedId) * 150 + 185, image);
 	}
+
+	//資訊欄
+	if (turnConstant == NULL)
+		image.load("./images/info0.png");
+	else if (turnConstant == BLACK)
+		image.load("./images/info1.png");
+	else if (turnConstant == RED)
+		image.load("./images/info2.png");
+
+	painter.drawPixmap(402, 0, image);
 }

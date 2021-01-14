@@ -2,6 +2,7 @@
 #include <QMouseEvent>
 
 #include "SinglePlayer.h"
+#include "MainWindow.h"
 
 QVector<NextMoveInfo> SinglePlayer::generateMoves() {
 	QVector<NextMoveInfo> nextMoveInfoVector;
@@ -103,6 +104,10 @@ QVector<NextMoveInfo> SinglePlayer::generateMoves() {
 		}
 	}
 	return nextMoveInfoVector;
+}
+
+SinglePlayer::SinglePlayer() {
+	setPlayerInfo("PLAYER", "COMPUTER");
 }
 
 PiecePosition SinglePlayer::saveCurrentBoard() {
@@ -316,6 +321,14 @@ void SinglePlayer::mouseReleaseEvent(QMouseEvent* ev) {
 	// ev: 滑鼠參數
 	int clickedId = click(ev->pos());
 
+	if (ev->x() >= 1530 && ev->x() <= 1600 && 
+		ev->y() >= 0 && ev->y() <= 50) {
+		MainWindow* control = static_cast<MainWindow*>(this->parentWidget()->parentWidget());
+		control->redirectToScreen(1);
+		init();
+		shuffle();
+	}
+
 	//若點擊非法範圍 -> 無效
 	if (clickedId == -1)
 		return;
@@ -324,6 +337,7 @@ void SinglePlayer::mouseReleaseEvent(QMouseEvent* ev) {
 	if (turn == NULL) {
 		flipPiece(clickedId);
 		getChessTypeId(clickedId) <= 7 ? turn = BLACK : turn = RED;
+		getChessTypeId(clickedId) <= 7 ? turnConstant = BLACK : turnConstant = RED;
 		repaint();
 		computerMove();
 		repaint();

@@ -17,7 +17,7 @@ public:
 public slots:
     void switchToMenu();
     void redirectToScreen(int redirectIndex);
-    void switchToSettings();
+    void switchToResult();
     void switchToSinglePlayer();
     void switchToMultiPlayer();
 

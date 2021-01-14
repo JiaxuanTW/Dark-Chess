@@ -115,11 +115,11 @@ void MainWindow::redirectToScreen(int redirectIndex) {
     case 4:
         break;
     case 5:
-        QTimer::singleShot(delay, this, SLOT(switchToSettings()));
+        QTimer::singleShot(delay, this, SLOT(switchToResult()));
         break;
     }
 }
 
-void MainWindow::switchToSettings() {
+void MainWindow::switchToResult() {
     stack->setCurrentIndex(5);
 }
