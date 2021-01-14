@@ -12,14 +12,6 @@ Board::Board(QWidget* parent)
 	: QWidget(parent) {
 
 	//初始化成員變數
-	turn = NULL;
-	turnConstant = NULL;
-	selectedId = -1;
-	roundCounter = 0;
-	stepCounter = 0;
-	player1 = "NULL";
-	player2 = "NULL";
-
 	init();
 	shuffle(); //生成隨機盤面
 }
@@ -60,6 +52,14 @@ int Board::getChessTypeId(int squareId) {
 }
 
 void Board::init() {
+	turn = NULL;
+	turnConstant = NULL;
+	selectedId = -1;
+	roundCounter = 0;
+	stepCounter = 0;
+	player1 = "NULL";
+	player2 = "NULL";
+
 	chessType[0].pos = 0x00000000;
 	chessType[1].pos = 0x00000002;
 	chessType[2].pos = 0x00000011;
@@ -117,6 +117,14 @@ void Board::shuffle() {
 		black |= chessType[i].pos;
 }
 
+bool Board::checkWinner() {
+	if (turn == RED && red == 0)
+		return true; // 黑方獲勝
+	if (turn == BLACK && black == 0)
+		return true; // 紅方獲勝
+	return false;
+}
+
 void Board::setPlayerInfo(QString p1, QString p2) {
 	player1 = p1;
 	player2 = p2;
@@ -145,6 +153,8 @@ void Board::movePiece(int srcSquareId, int destSquareId) {
 
 	// 走完棋 -> 換邊
 	nextTurn();
+	stepCounter++;
+	roundCounter = stepCounter / 2;
 }
 
 void Board::flipPiece(int destSquareId) {
@@ -155,6 +165,8 @@ void Board::flipPiece(int destSquareId) {
 	unsigned int mask = rowMask[destRowId] & colMask[destColumnId];
 	chessType[15].pos ^= mask;
 	nextTurn();
+	stepCounter++;
+	roundCounter = stepCounter / 2;
 }
 
 bool Board::validMove(int srcSquareId, int destSquareId) {
@@ -418,6 +430,7 @@ void Board::paintEvent(QPaintEvent*) {
 		image.load("./images/info1.png");
 	else if (turnConstant == RED)
 		image.load("./images/info2.png");
-
 	painter.drawPixmap(402, 0, image);
+	painter.setFont(QFont("consolas", 22));
+	painter.drawText(QRectF(750, 28, 60, 40), Qt::AlignRight, QString::number(roundCounter));
 }

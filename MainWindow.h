@@ -16,10 +16,10 @@ public:
 
 public slots:
     void switchToMenu();
-    void redirectToScreen(int redirectIndex);
-    void switchToResult();
     void switchToSinglePlayer();
     void switchToMultiPlayer();
+    void switchToResult(int displayMode);
+    void redirectToScreen(int redirectIndex);
 
 private:
     void config();

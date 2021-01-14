@@ -10,6 +10,7 @@
 class Board : public QWidget
 {
 	Q_OBJECT
+
 public:
 	explicit Board(QWidget* parent = Q_NULLPTR);
 
@@ -23,6 +24,7 @@ public:
 	/* 棋盤功能 */
 	void init();
 	void shuffle();
+	bool checkWinner();
 	void setPlayerInfo(QString p1, QString p2);
 	
 	/* 走棋運算 */

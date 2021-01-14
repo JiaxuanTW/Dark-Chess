@@ -1,8 +1,10 @@
 #include <QTime>
 #include <QMouseEvent>
+#include <QThread>
 
 #include "SinglePlayer.h"
 #include "MainWindow.h"
+#include "ResultScreen.h"
 
 QVector<NextMoveInfo> SinglePlayer::generateMoves() {
 	QVector<NextMoveInfo> nextMoveInfoVector;
@@ -125,6 +127,7 @@ PiecePosition SinglePlayer::saveCurrentBoard() {
 }
 
 void SinglePlayer::computerMove() {
+	QThread::sleep(1);
 	QVector<NextMoveInfo> nextMoveInfo = generateMoves();
 
 	// 如果沒有可移動步伐，就進行翻棋
@@ -314,6 +317,8 @@ void SinglePlayer::undoFakeMove(PiecePosition piecePosition) {
 
 	// 換邊
 	nextTurn();
+	stepCounter--;
+	roundCounter = stepCounter / 2;
 }
 
 void SinglePlayer::mouseReleaseEvent(QMouseEvent* ev) {
@@ -352,6 +357,10 @@ void SinglePlayer::mouseReleaseEvent(QMouseEvent* ev) {
 			flipPiece(clickedId);
 			repaint();
 			computerMove();
+			//if (checkWinner()) {
+			//	MainWindow* control = static_cast<MainWindow*>(this->parentWidget()->parentWidget());
+			//	control->switchToResult(ResultScreen::ComputerWins);
+			//}
 		}
 		else {
 			selectedId = clickedId;
@@ -363,6 +372,10 @@ void SinglePlayer::mouseReleaseEvent(QMouseEvent* ev) {
 			selectedId = -1;
 			repaint();
 			computerMove();
+			//if (checkWinner()) {
+			//	MainWindow* control = static_cast<MainWindow*>(this->parentWidget()->parentWidget());
+			//	control->switchToResult(ResultScreen::ComputerWins);
+			//}
 		}
 		else {
 			printf("Capture Failed!\n");

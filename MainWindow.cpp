@@ -23,14 +23,25 @@ MainWindow::MainWindow(QWidget *parent)
     SinglePlayer* single = new SinglePlayer;
     MultiPlayer* multi = new MultiPlayer;
     LoadingScreen* loading = new LoadingScreen;
-    ResultScreen* result = new ResultScreen;
+    
+    ResultScreen* result1 = new ResultScreen;
+    result1->setDisplayMode(ResultScreen::ComputerWins);
+    ResultScreen* result2 = new ResultScreen;
+    result1->setDisplayMode(ResultScreen::PlayerWins);
+    ResultScreen* result3 = new ResultScreen;
+    result1->setDisplayMode(ResultScreen::Player1Wins);
+    ResultScreen* result4 = new ResultScreen;
+    result1->setDisplayMode(ResultScreen::Player2Wins);
 
     stack->addWidget(opening);  // 0
     stack->addWidget(menu);     // 1
     stack->addWidget(single);   // 2
     stack->addWidget(multi);    // 3
     stack->addWidget(loading);  // 4
-    stack->addWidget(result);   // 5
+    stack->addWidget(result1);  // 5
+    stack->addWidget(result2);  // 6
+    stack->addWidget(result3);  // 7
+    stack->addWidget(result4);  // 8
     
     stack->setCurrentIndex(0);
 
@@ -39,27 +50,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     config(); //設置視窗參數
 }
-
-//void MainWindow::transitScreen() {
-//    int screenIndex = 1;
-//    switch (screenIndex) {
-//    case 1:
-//        switchToMenu();
-//        break;
-//    case 2:
-//        switchToSinglePlayer();
-//        break;
-//    case 3:
-//        switchToMultiPlayer();
-//        break;
-//    case 4:
-//        switchToLoadingScreen();
-//        break;
-//    case 5:
-//        switchToSettings();
-//        break;
-//    }
-//}
 
 void MainWindow::config() {
     setFixedSize(1600, 900);
@@ -112,14 +102,22 @@ void MainWindow::redirectToScreen(int redirectIndex) {
     case 3:
         QTimer::singleShot(delay, this, SLOT(switchToMultiPlayer()));
         break;
-    case 4:
-        break;
-    case 5:
-        QTimer::singleShot(delay, this, SLOT(switchToResult()));
-        break;
     }
 }
 
-void MainWindow::switchToResult() {
-    stack->setCurrentIndex(5);
+void MainWindow::switchToResult(int displayMode) {
+    switch (displayMode) {
+    case ResultScreen::ComputerWins:
+        stack->setCurrentIndex(5);
+        break;
+    case ResultScreen::PlayerWins:
+        stack->setCurrentIndex(6);
+        break;
+    case ResultScreen::Player1Wins:
+        stack->setCurrentIndex(7);
+        break;
+    case ResultScreen::Player2Wins:
+        stack->setCurrentIndex(8);
+        break;
+    }
 }
