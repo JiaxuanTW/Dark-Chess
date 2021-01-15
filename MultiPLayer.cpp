@@ -3,6 +3,10 @@
 #include "MultiPLayer.h"
 #include "MainWindow.h"
 
+MultiPlayer::MultiPlayer() {
+	setPlayerInfo("PLAYER 1", "PLAYER 2");
+}
+
 void MultiPlayer::mouseReleaseEvent(QMouseEvent* ev) {
 	int clickedId = click(ev->pos());
 

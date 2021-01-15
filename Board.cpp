@@ -425,6 +425,10 @@ void Board::paintEvent(QPaintEvent*) {
 	// 繪製棋子
 	drawPieces(painter);
 
+	// 繪製格線
+	image.load("./images/grid.png");
+	painter.drawPixmap(0, 0, image);
+
 	//資訊欄
 	if (turnConstant == NULL)
 		image.load("./images/info0.png");
@@ -435,4 +439,8 @@ void Board::paintEvent(QPaintEvent*) {
 	painter.drawPixmap(402, 0, image);
 	painter.setFont(QFont("consolas", 22));
 	painter.drawText(QRectF(750, 28, 60, 40), Qt::AlignRight, QString::number(roundCounter));
+	painter.setFont(QFont("consolas", 18));
+	painter.setPen(Qt::white);
+	painter.drawText(QRectF(450, 10, 160, 40), Qt::AlignRight, player1);
+	painter.drawText(QRectF(990, 10, 160, 40), Qt::AlignLeft, player2);
 }
