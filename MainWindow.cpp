@@ -78,12 +78,24 @@ void MainWindow::switchToMenu() {
 }
 
 void MainWindow::switchToSinglePlayer() {
-    player->stop();
+    player = new QMediaPlayer();
+    QMediaPlaylist* playlist = new QMediaPlaylist();
+    playlist->addMedia(QUrl::fromLocalFile("./audios/bgm.mp3"));
+    playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+    player->setPlaylist(playlist);
+
+    player->play();
     stack->setCurrentIndex(2);
 }
 
 void MainWindow::switchToMultiPlayer() {
-    player->stop();
+    player = new QMediaPlayer();
+    QMediaPlaylist* playlist = new QMediaPlaylist();
+    playlist->addMedia(QUrl::fromLocalFile("./audios/bgm.mp3"));
+    playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+    player->setPlaylist(playlist);
+
+    player->play();
     stack->setCurrentIndex(3);
 }
 
