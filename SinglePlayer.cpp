@@ -331,6 +331,7 @@ void SinglePlayer::mouseReleaseEvent(QMouseEvent* ev) {
 		MainWindow* control = static_cast<MainWindow*>(this->parentWidget()->parentWidget());
 		control->redirectToScreen(1);
 		init();
+		setPlayerInfo("PLAYER", "COMPUTER");
 		shuffle();
 	}
 

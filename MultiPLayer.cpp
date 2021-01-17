@@ -15,6 +15,7 @@ void MultiPlayer::mouseReleaseEvent(QMouseEvent* ev) {
 		MainWindow* control = static_cast<MainWindow*>(this->parentWidget()->parentWidget());
 		control->redirectToScreen(1);
 		init();
+		setPlayerInfo("PLAYER 1", "PLAYER 2");
 		shuffle();
 	}
 
